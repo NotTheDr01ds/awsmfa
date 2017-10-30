@@ -1,0 +1,26 @@
+{
+  "name": "awsmfa",
+  "version": "1.0.0",
+  "description": "Updates AWS credentials to allow MFA use with aws-cli",
+  "main": "awsmfa.js",
+  "dependencies": {
+    "aws-sdk": "^2.141.0",
+    "awssdk": "^1.0.1",
+    "ini": "^1.3.4",
+    "minimist": "^1.2.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NotTheDr01ds/awsmfa.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/NotTheDr01ds/awsmfa/issues"
+  },
+  "homepage": "https://github.com/NotTheDr01ds/awsmfa#readme"
+}

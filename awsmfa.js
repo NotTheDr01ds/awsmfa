@@ -2,8 +2,10 @@ var fs=require('fs');
 var path=require('path');
 var ini=require('ini');
 var parseArgs=require('minimist');
+var AWS=require('aws-sdk');
 
-var argv=parseArgs(process.argv);
+var argv=parseArgs(process.argv, {string: ["_"]});
+var tokenCode=argv._[2];
 filePath=path.join(process.env["HOME"],".aws/credentials");
 fs.readFile(filePath, "utf-8", (err, data)=>{
   if (err) {
@@ -20,7 +22,29 @@ fs.readFile(filePath, "utf-8", (err, data)=>{
       process.exit(1);
     }
 
-    console.log("Switching to profile: " + awsProfile);
-    console.log(config);
+    awsMFAProfile=awsProfile + 'mfa';
+    console.log("Temporarily switching to profile: " + awsMFAProfile);
+    var credentials = new AWS.SharedIniFileCredentials({profile: awsMFAProfile});
+    credentials.get(function (err) {
+      if (err) {
+        console.log(`Error: ${err}`);
+        process.exit(2);
+      }
+    });
+
+    AWS.config.credentials = credentials;
+
+    var mfaSerial=config[awsMFAProfile].mfa_serial;
+    var sts=new AWS.STS();
+    var stsParams={
+      DurationSeconds: 7200,
+      SerialNumber: mfaSerial,
+      TokenCode: tokenCode
+    };
+    sts.getSessionToken(stsParams,function (err,data) {
+      if (err) console.log(err,err.stack);
+      else console.log(data);
+    });
+
   }
 })

@@ -1,4 +1,5 @@
 #! /usr/bin/env node
+"use strict";
 
 var fs=require('fs');
 var path=require('path');
@@ -6,6 +7,10 @@ var ini=require('ini');
 var parseArgs=require('minimist');
 var AWS=require('aws-sdk');
 var iam;
+var filePath;
+var data;
+var awsProfile;
+var awsMFAProfile;
 
 function getMFASerial() {
   return new Promise((resolve, reject) => {
@@ -36,10 +41,10 @@ function getMFASerial() {
   })
 }
 
-
 var argv=parseArgs(process.argv, {string: ["_"]});
 var tokenCode=argv._[2];
 filePath=path.join(process.env["HOME"],".aws/credentials");
+console.log(filePath);
 try {
   data=fs.readFileSync(filePath, "utf-8");
 } catch (err) {

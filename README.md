@@ -1,6 +1,13 @@
 # awsmfa
 # Updates AWS credentials to allow MFA use with aws-cli
 
+## Usage
+
+awsmfa --profile=profilename 000000
+
+... where profilename is the name of a profile in your AWS credentials file which is protected by 2 factor authentication.
+And replace 000000 with the token from your MFA device.
+
 ## Configuration:
 
 For your IAM user, add the following policy to enforce 2FA on the CLI:
@@ -41,6 +48,8 @@ For your IAM user, add the following policy to enforce 2FA on the CLI:
 
 }
 ```
+
+iam.ListMFADevices is optional, since you can specify the MFA serial number in your credentials file (see below) if desired.
 
 Adjust the MultiFactorAuthAge as desired.  The expiration time in this policy is set to 4 hours.  This policy will only allow access to the GetSessionToken and ListMFADevices API's unless credentials are used which have been provided through the MFA.
 

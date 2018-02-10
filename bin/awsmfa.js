@@ -28,6 +28,7 @@ function getMFASerial() {
       iam.listMFADevices().promise().then(
         (response) => {
           try {
+            if (!response.MFADevices[0]) reject({"errorCode": "404", "message": "No MFA Device found for profile."});
             mfaSerial = response.MFADevices[0].SerialNumber;
             resolve(mfaSerial);
           } catch (err) {
@@ -35,6 +36,7 @@ function getMFASerial() {
           }
         }
       ).catch((err) => {
+        if (err.code == 'AccessDenied') err.message = "Cannot read MFA device from IAM.  Please check that the user has iam:ListMFADevices permission.";
         reject(err);
       })
     }
@@ -101,7 +103,7 @@ getMFASerial().then((mfaSerial) => {
     }
   });
 }).catch((err) => {
-  console.log(err);
+  console.log(err.message);
 })
 
 

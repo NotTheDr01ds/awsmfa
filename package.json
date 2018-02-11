@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "Updates AWS credentials to allow MFA use with aws-cli",
   "main": "awsmfa.js",
+  "bin": {
+    "awsmfa": "bin/awsmfa.js"
+  },
   "dependencies": {
     "aws-sdk": "^2.141.0",
     "awssdk": "^1.0.1",

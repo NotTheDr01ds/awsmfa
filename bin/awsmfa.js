@@ -90,6 +90,7 @@ getMFASerial().then((mfaSerial) => {
       process.exit(5);
     }
     else {
+      if (!config[awsProfile]) config[awsProfile] = {};
       config[awsProfile].aws_access_key_id=data.Credentials.AccessKeyId;
       config[awsProfile].aws_secret_access_key=data.Credentials.SecretAccessKey;
       config[awsProfile].aws_session_token=data.Credentials.SessionToken;
